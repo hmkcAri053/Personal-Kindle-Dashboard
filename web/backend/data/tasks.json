@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "weather": "Cloudy · 3°C / 8°C",
+    "semester": "Week 8 · 2026 Spring"
+  },
+  "tasks": [
+    {
+      "id": "2d0a6de4-42d6-4884-bdbd-f72f03aed8c6",
+      "title": "Test1",
+      "courseCode": "CTV2002",
+      "courseName": "Course1",
+      "dueAt": "2026-03-04T19:00",
+      "timeSlot": "PM",
+      "priority": "high",
+      "status": "pending",
+      "createdAt": "2026-02-21T18:11",
+      "completedAt": null,
+      "scheduledDate": null,
+      "scheduledSlot": null,
+      "archivedAt": null
+    },
+    {
+      "id": "ea092722-6dc0-43e5-9ae4-b6c2ac1a9361",
+      "title": "Test2Edit",
+      "courseCode": "CCM3083",
+      "courseName": "Culture, Creativity and Management in Chinese Cities",
+      "dueAt": "2026-03-06T12:00",
+      "timeSlot": "PM",
+      "scheduledDate": null,
+      "scheduledSlot": null,
+      "priority": "mid",
+      "status": "archived",
+      "createdAt": "2026-02-27T11:51",
+      "completedAt": "2026-02-27T15:37",
+      "archivedAt": "2026-02-27T15:37"
+    },
+    {
+      "id": "ef9a9878-aa0a-46b1-bfda-125bd28056d8",
+      "title": "111",
+      "courseCode": "CCM3083",
+      "courseName": "Culture, Creativity and Management in Chinese Cities",
+      "dueAt": "2026-02-27T16:00",
+      "timeSlot": "PM",
+      "scheduledDate": null,
+      "scheduledSlot": null,
+      "priority": "mid",
+      "status": "pending",
+      "createdAt": "2026-02-27T15:37",
+      "completedAt": null,
+      "archivedAt": null
+    }
+  ]
+}

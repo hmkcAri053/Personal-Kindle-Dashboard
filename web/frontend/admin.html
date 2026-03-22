@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <main class="admin-shell">
+    <section class="left-rail">
+      <section class="summary-stream">
+        <div class="section-headline">
+          <div>
+            <h2>
+              <span class="title-with-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>
+                任务数量总览
+              </span>
+            </h2>
+            <p>聚焦待办、完成和 48 小时临近截止项。</p>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-item">
+            <span class="summary-label">任务总数</span>
+            <strong id="summary-total">0</strong>
+          </article>
+          <article class="summary-item">
+            <span class="summary-label">待完成</span>
+            <strong id="summary-pending">0</strong>
+          </article>
+          <article class="summary-item">
+            <span class="summary-label">已完成</span>
+            <strong id="summary-completed">0</strong>
+          </article>
+          <article class="summary-item summary-item-warn">
+            <span class="summary-label">48h 内截止</span>
+            <strong id="summary-urgent">0</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="create-stream">
+        <div class="section-headline">
+          <div>
+            <h2>
+              <span class="title-with-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">add_task</span>
+                添加任务
+              </span>
+            </h2>
+            <p>优先选择课程预设，再填写任务内容与截止信息。</p>
+          </div>
+        </div>
+
+        <form id="create-form" class="create-form-grid">
+          <label class="field-span-2">
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">subject</span>
+              任务名称
+            </span>
+            <input type="text" name="title" required maxlength="100" placeholder="Calculus Midterm Review" />
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">event</span>
+              截止时间
+            </span>
+            <input id="due-at" type="datetime-local" name="dueAt" required />
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">flag</span>
+              优先级
+            </span>
+            <select name="priority" required>
+              <option value="mid">中</option>
+              <option value="high">高</option>
+              <option value="low">低</option>
+            </select>
+          </label>
+
+          <label class="field-span-2">
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+              课程预设
+            </span>
+            <select id="course-preset">
+              <option value="">手动填写（无预设）</option>
+              <option value="CTV2033||Communication Research Methods">CTV2033 · Communication Research Methods</option>
+              <option value="CCM3083||Culture, Creativity and Management in Chinese Cities">CCM3083 · Culture, Creativity and Management in Chinese Cities</option>
+              <option value="MAD3073||Language for Audio-visual Design">MAD3073 · Language for Audio-visual Design</option>
+              <option value="JAP1013||Japanese I">JAP1013 · Japanese I</option>
+              <option value="MAD3033||3D Design Fundamentals">MAD3033 · 3D Design Fundamentals</option>
+            </select>
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">sell</span>
+              课程代码
+            </span>
+            <input id="course-code-input" type="text" name="courseCode" required maxlength="16" placeholder="MAD3033" />
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">school</span>
+              课程名
+            </span>
+            <input id="course-name-input" type="text" name="courseName" maxlength="60" placeholder="Calculus II" />
+          </label>
+
+          <div class="form-actions field-span-2">
+            <button type="submit" class="btn btn-primary">
+              <span class="material-symbols-outlined" aria-hidden="true">add_circle</span>
+              <span id="submit-label">添加任务</span>
+            </button>
+            <button id="cancel-edit" type="button" class="btn btn-tonal" hidden>
+              <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              取消修改
+            </button>
+            <span id="feedback" class="feedback" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <section class="right-rail">
+      <header class="workspace-title">
+        <p class="title-kicker">
+          <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+          Kindle Dashboard Admin
+        </p>
+        <h1>任务运营台</h1>
+        <p>右侧聚焦任务执行与排程，左侧聚焦运营输入。页面面向日常运维，展示大屏请访问 <code>/</code>。</p>
+      </header>
+
+      <section class="schedule-stream">
+        <div class="section-headline">
+          <div>
+            <h2>
+              <span class="title-with-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+                本周预约排程
+              </span>
+            </h2>
+            <p>给待办任务指定 AM / PM / EVE / NIT 执行时段。</p>
+          </div>
+          <button id="refresh-schedule" type="button" class="btn btn-tonal">
+            <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+            刷新排程
+          </button>
+        </div>
+
+        <form id="schedule-form" class="schedule-form">
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">task</span>
+              任务
+            </span>
+            <select id="schedule-task-id" name="taskId" required></select>
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">today</span>
+              预约日期
+            </span>
+            <input id="schedule-date" type="date" name="scheduledDate" required />
+          </label>
+
+          <label>
+            <span class="field-label">
+              <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+              时段
+            </span>
+            <select id="schedule-slot" name="scheduledSlot" required>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+              <option value="EVE">EVE</option>
+              <option value="NIT">NIT</option>
+            </select>
+          </label>
+
+          <div class="form-actions schedule-actions">
+            <button type="submit" class="btn btn-primary">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              设置预约
+            </button>
+            <button id="clear-schedule" type="button" class="btn btn-tonal">
+              <span class="material-symbols-outlined" aria-hidden="true">backspace</span>
+              清空该任务预约
+            </button>
+            <span id="schedule-feedback" class="feedback" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <div class="table-wrap">
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>AM</th>
+                <th>PM</th>
+                <th>EVE</th>
+                <th>NIT</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tasks-stream">
+        <div class="section-headline">
+          <div>
+            <h2>
+              <span class="title-with-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">checklist</span>
+                任务列表
+              </span>
+            </h2>
+            <p>按状态筛选后可直接完成、恢复、归档或删除任务。</p>
+          </div>
+          <div class="filters" id="filters">
+            <button data-filter="all" class="active">全部</button>
+            <button data-filter="pending">待办</button>
+            <button data-filter="completed">已完成</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>任务</th>
+                <th>课程</th>
+                <th>截止</th>
+                <th>优先级</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="tasks-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="archive-stream">
+        <details class="archive-details">
+          <summary>
+            <span class="title-with-icon">
+              <span class="material-symbols-outlined" aria-hidden="true">archive</span>
+              归档任务
+            </span>
+            <span class="archive-summary-right">
+              <span>默认折叠</span>
+              <span id="archived-count" class="archive-count-chip">0</span>
+              <span class="archive-caret" aria-hidden="true">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </span>
+            </span>
+          </summary>
+
+          <div class="archive-body">
+            <p class="archive-helper">归档任务不会显示在首页 <code>index.html</code> 的已完成列表中，可在此恢复到“已完成”或“待办”。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>课程</th>
+                    <th>截止</th>
+                    <th>优先级</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="archived-tasks-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const presetSelect = document.getElementById("course-preset");
+      const codeInput = document.getElementById("course-code-input");
+      const nameInput = document.getElementById("course-name-input");
+
+      if (!presetSelect || !codeInput || !nameInput) {
+        return;
+      }
+
+      function normalize(value) {
+        return String(value || "").trim();
+      }
+
+      function syncPresetSelection() {
+        const currentCode = normalize(codeInput.value).toUpperCase();
+        const currentName = normalize(nameInput.value);
+
+        if (!currentCode && !currentName) {
+          presetSelect.value = "";
+          return;
+        }
+
+        const matched = Array.from(presetSelect.options).find((option) => {
+          if (!option.value) {
+            return false;
+          }
+          const [code, name] = option.value.split("||");
+          return currentCode === normalize(code).toUpperCase() && currentName === normalize(name);
+        });
+
+        presetSelect.value = matched ? matched.value : "";
+      }
+
+      presetSelect.addEventListener("change", () => {
+        if (!presetSelect.value) {
+          return;
+        }
+
+        const [code, name] = presetSelect.value.split("||");
+        codeInput.value = (code || "").trim();
+        nameInput.value = (name || "").trim();
+      });
+
+      codeInput.addEventListener("input", syncPresetSelection);
+      nameInput.addEventListener("input", syncPresetSelection);
+      syncPresetSelection();
+    })();
+  </script>
+</body>
+</html>
